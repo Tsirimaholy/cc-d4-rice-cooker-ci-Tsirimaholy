@@ -11,3 +11,6 @@ Install it and just run the following command to check for linting:
 ```shell
 golangci-lint run
 ```
+
+# standard
+https://go.dev/doc/effective_go
