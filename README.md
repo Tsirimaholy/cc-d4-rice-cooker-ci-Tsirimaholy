@@ -4,3 +4,10 @@ To run the program run the following command
 go build main\main.go
 ./main
 ```
+
+# linter
+I used the linter [golangci-lint](https://golangci-lint.run/usage/install/)
+Install it and just run the following command to check for linting:
+```shell
+golangci-lint run
+```
