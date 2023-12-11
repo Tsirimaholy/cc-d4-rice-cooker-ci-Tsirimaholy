@@ -1,4 +1,5 @@
-import { Commands, RiceCooker } from './RiceCooker'
+import { RiceCooker } from './RiceCooker'
+import { Commands } from './RiceCookerState'
 import readline from 'readline'
 
 const rl = readline.createInterface({
