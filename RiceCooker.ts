@@ -21,8 +21,8 @@ enum ErrorCodes {
 
 export class RiceCooker {
   private state: RiceCookerState = RiceCookerState.IDLE
-  private hasWater: boolean = true
-  private isPluggedIn: boolean = true
+  private hasWater: boolean = false
+  private isPluggedIn: boolean = false
 
   cookRice (): void {
     if (!this.isPluggedIn) {
