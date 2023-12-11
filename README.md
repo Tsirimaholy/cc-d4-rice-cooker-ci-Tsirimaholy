@@ -2,14 +2,22 @@
 
 linter: [ts-standard](https://github.com/standard/ts-standard)
 standard used: JSS (javascript standard style)
-## Prerequisite
- 
-Install the lts version of [node](https://nodejs.org/en/download/current)
 
+## Prerequisite
+
+Install the lts version of [node](https://nodejs.org/en/download/current)
 
 ## To run the program follow the below instructions
 
 ```sh
 npm i
 tsc && node ./dist/main.js
+```
+
+## Linter
+
+Run this following command to check for linting error/issues
+
+```sh
+npx ts-standard
 ```
