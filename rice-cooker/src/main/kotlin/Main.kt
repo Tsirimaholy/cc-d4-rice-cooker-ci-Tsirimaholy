@@ -1,35 +1,23 @@
-package org.example
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.runBlocking
+import java.util.*
 
 enum class RiceCookerState {
-    IDLE,
-    COOKING,
-    WARM
+    IDLE, COOKING, WARM
 }
 
 enum class Commands {
-    COOK,
-    WARM,
-    CANCEL,
-    ADD_WATER,
-    PLUG_IN,
-    UNPLUG,
-    EXIT
+    COOK, WARM, CANCEL, ADD_WATER, PLUG_IN, UNPLUG, EXIT
 }
 
 enum class ErrorCodes {
-    NO_WATER,
-    NOT_PLUGGED_IN,
-    BUSY
+    NO_WATER, NOT_PLUGGED_IN, BUSY
 }
 
 class RiceCooker {
     private var state: RiceCookerState = RiceCookerState.IDLE
-    private var hasWater: Boolean = true
-    private var isPluggedIn: Boolean = true
+    private var hasWater: Boolean = false
+    private var isPluggedIn: Boolean = false
 
-    suspend fun cookRice() {
+    fun cookRice() {
         if (!isPluggedIn) {
             println("Error: ${ErrorCodes.NOT_PLUGGED_IN} - Rice cooker is not plugged in.")
             return
@@ -48,14 +36,14 @@ class RiceCooker {
         state = RiceCookerState.COOKING
         println("Cooking rice...")
 
-        // Simulate cooking time
-        delay(3000)
-
-        println("Rice is cooked!")
-        state = RiceCookerState.IDLE
+        Thread {
+            Thread.sleep(3000) // Simulate cooking time (3 seconds)
+            println("Rice is cooked!")
+            state = RiceCookerState.IDLE
+        }.start()
     }
 
-    suspend fun warmRice() {
+    fun warmRice() {
         if (!isPluggedIn) {
             println("Error: ${ErrorCodes.NOT_PLUGGED_IN} - Rice cooker is not plugged in.")
             return
@@ -74,11 +62,11 @@ class RiceCooker {
         state = RiceCookerState.WARM
         println("Warming rice...")
 
-        // Simulate warming time
-        delay(1000)
-
-        println("Rice is warm and ready to serve!")
-        state = RiceCookerState.IDLE
+        Thread {
+            Thread.sleep(1000) // Simulate warming time (1 second)
+            println("Rice is warm and ready to serve!")
+            state = RiceCookerState.IDLE
+        }.start()
     }
 
     fun cancel() {
@@ -122,43 +110,29 @@ class RiceCooker {
         println("6. Unplug")
         println("7. Exit")
     }
-
-    suspend fun handleCommand(command: Int) {
-        when (command) {
-            1 -> cookRice()
-            2 -> warmRice()
-            3 -> cancel()
-            4 -> addWater()
-            5 -> plugIn()
-            6 -> unplug()
-            7 -> {
-                println("Exiting Rice Cooker CLI. Goodbye!")
-                System.exit(0)
-            }
-            else -> println("Invalid command. Please enter a valid option.")
-        }
-    }
 }
 
-fun main() = runBlocking {
+fun main() {
+    val scanner = Scanner(System.`in`)
     val cooker = RiceCooker()
 
-    while (true) {
+    do {
         cooker.printMenu()
         print("Enter your command: ")
-        val userChoice = readLine()
+        val command = scanner.nextInt()
 
-        if (userChoice == null) {
-            println("Invalid input. Please enter a command.")
-            continue
+        when (command) {
+            1 -> cooker.cookRice()
+            2 -> cooker.warmRice()
+            3 -> cooker.cancel()
+            4 -> cooker.addWater()
+            5 -> cooker.plugIn()
+            6 -> cooker.unplug()
+            7 -> println("Exiting Rice Cooker CLI. Goodbye!")
+            else -> println("Invalid command. Please enter a valid option.")
         }
 
-        val command = userChoice.trim().toIntOrNull()
+        Thread.sleep(100) // Allow threads to execute before prompting for the next input
 
-        if (command == null) {
-            println("Invalid input. Please enter a number.")
-        } else {
-            cooker.handleCommand(command)
-        }
-    }
+    } while (command != Commands.EXIT.ordinal + 1)
 }
