@@ -6,12 +6,11 @@ import kotlin.test.assertEquals
 class RiceCookerTest {
 
     @Test
-    fun testCookRice() {
+    fun `rice should be cooked after 5 seconds and the rc state become IDLE`() {
         val cooker = RiceCooker()
         val latch = CountDownLatch(1)
 
-        cooker.plugIn()
-        cooker.addWater()
+        prepare(cooker)
         cooker.cookRice()
 
         // Wait for the asynchronous operation to complete
@@ -21,12 +20,11 @@ class RiceCookerTest {
     }
 
     @Test
-    fun testWarmRice() {
+    fun `rice should be warm after 2 seconds and the state IDLE`() {
         val cooker = RiceCooker()
         val latch = CountDownLatch(1)
 
-        cooker.plugIn()
-        cooker.addWater()
+        prepare(cooker)
         cooker.warmRice()
 
         // Wait for the asynchronous operation to complete
@@ -36,13 +34,10 @@ class RiceCookerTest {
     }
 
     @Test
-    fun testCancel() {
+    fun `The rc should idle directly when the operation is canceled`() {
         val cooker = RiceCooker()
 
-        cooker.plugIn()
-
-        cooker.addWater()
-
+        prepare(cooker)
         cooker.cookRice() // Start cooking
         cooker.cancel()
         assertEquals(RiceCookerState.IDLE, cooker.state)
@@ -67,8 +62,7 @@ class RiceCookerTest {
     @Test
     fun testUnplug() {
         val cooker = RiceCooker()
-        cooker.plugIn()
-        cooker.addWater()
+        prepare(cooker)
         cooker.cookRice() // Start cooking
         cooker.unplug()
 
@@ -82,5 +76,10 @@ class RiceCookerTest {
         // Now, unplug again
         cooker.unplug()
         assertEquals(RiceCookerState.IDLE, cooker.state)
+    }
+
+    private fun prepare(cooker: RiceCooker) {
+        cooker.plugIn()
+        cooker.addWater()
     }
 }
