@@ -13,9 +13,24 @@ enum class ErrorCodes {
 }
 
 class RiceCooker {
-    private var state: RiceCookerState = RiceCookerState.IDLE
-    private var hasWater: Boolean = false
-    private var isPluggedIn: Boolean = false
+    private var _state: RiceCookerState = RiceCookerState.IDLE
+    var state: RiceCookerState
+        get() = _state
+        set(value) {
+            _state = value
+        }
+    private var _hasWater: Boolean = false
+    var hasWater: Boolean
+        get() = _hasWater
+        set(value) {
+            _hasWater = value
+        }
+    private var _isPluggedIn: Boolean = false
+    var isPluggedIn: Boolean
+        get() = _isPluggedIn
+        set(value) {
+            _isPluggedIn = value
+        }
 
     fun cookRice() {
         if (!isPluggedIn) {
