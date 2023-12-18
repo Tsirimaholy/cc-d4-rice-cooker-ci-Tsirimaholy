@@ -67,6 +67,8 @@ class RiceCookerTest {
     @Test
     fun testUnplug() {
         val cooker = RiceCooker()
+        cooker.plugIn()
+        cooker.addWater()
         cooker.cookRice() // Start cooking
         cooker.unplug()
 
